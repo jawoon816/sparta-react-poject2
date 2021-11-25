@@ -7,8 +7,8 @@ import Detail from "./Detail";
 function App() {
   const [list,setList] = React.useState([
     {word: "word", meaning:"단어, 낱말", example:"Do not write more than 200 words."},
-    {word: "hello", meaning:"인사, 여보세요", example:"Hello John, how are you?"}
-     
+    {word: "hello", meaning:"인사, 여보세요", example:"Hello John, how are you?"},
+    {word: "voyage", meaning:"여행, 항해", example:"an around-the-world voyage"}     
   ])
  console.log(list[1].word);
   return (
@@ -22,7 +22,7 @@ function App() {
             <Dictionary list={list}/>
           </Route>
           <Route path="/detail" exact>
-            <Detail />
+            <Detail list={list}/>
           </Route>
         </div>
       </Wrap>

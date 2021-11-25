@@ -1,26 +1,54 @@
 import React from "react";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import {createDictionary} from "./redux/modules/dictionary";
+
 
 const Detail = (props) => {
-    return (
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const [list, setList] = React.useState(props);
+
+    // console.log(list)
+    const my_input = React.useRef(null);
+    const my_input2 = React.useRef(null);
+    const my_input3 = React.useRef(null);
+
+    // window.setTimeout(() => {
+    //     console.log(my_input)
+    // }, 1000)
+
+    const addDicList = () => {
+        const word = my_input.current.value;
+        const meaning = my_input2.current.value;
+        const example = my_input3.current.value;
         
-            <Wrap>
-                <h5>단어 추가하기</h5>
-                <Box>
-                    <Word>단어</Word>
-                    <Input type="text" />
-                </Box>
-                <Box>
-                    <Word>설명</Word>
-                    <Input type="text" />
-                </Box>
-                <Box>
-                    <Word>예시</Word>
-                    <Input type="text" />
-                </Box>
-                <Button>추가하기</Button>
-            </Wrap>
-    
+        const wrap = {word, meaning, example};
+        console.log(wrap);
+       
+        // setList([{...list, ...wrap}]);
+
+        dispatch(createDictionary(wrap));
+    }
+    // console.log(list)
+    return (
+        <Wrap>
+            <h5 style={{color:"#858483"}}>단어 추가하기</h5>
+            <Box>
+                <Word>단어</Word>
+                <Input type="text" ref={my_input} />
+            </Box>
+            <Box>
+                <Word>설명</Word>
+                <Input type="text" ref={my_input2} />
+            </Box>
+            <Box>
+                <Word>예시</Word>
+                <Input type="text" ref={my_input3}/>
+            </Box>
+            <Button onClick={addDicList}>추가하기</Button>
+        </Wrap>
     );
 }
 
@@ -62,11 +90,13 @@ border: #DDD solid 1px;
 
 const Button = styled.button`
 padding: 10px;
-background-color: orange;
+background-color: #fff3c4;
 margin-top: 20px;
-border-radius: 5px;
-border: orange solid;
+border-radius: 10px;
+border: #ffde59 solid;
 cursor: pointer;
+box-shadow: 1px 1px 2px 1px #dadce0;
+color: #858483;
 `;
 
 export default Detail;

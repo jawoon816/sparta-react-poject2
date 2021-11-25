@@ -1,31 +1,44 @@
 import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Dictionary = (props) => {
-    const history =useHistory();
+    const history = useHistory();
     // console.log(props.list)
+    // const dic_list = props.list;
+    const dic_list = useSelector((state)=>state.dictionary.list);
+    console.log(dic_list)
+    
     return (
         <Wrap>
             <Container>
-                <Card>
-                    <P>
-                        <Word>단어</Word>
-                        <b style={{fontSize:"30px"}}>단어</b>
-                    </P>
-                    <P>
-                        <Word>설명</Word>
-                        <Explain>설명입니다.</Explain>
-                    </P>
-                    <P>
-                        <Word>예시</Word>
-                        <Example>예시입니다.</Example>
-                    </P>
-                </Card>
+                {dic_list.map((l, idx) => {
+                    console.log(l,idx);
+                    return (
+                        <Card className="card" key={idx}>
+                            <P>
+                                <Word>단어</Word>
+                                <b style={{ fontSize: "30px" }}>
+                                    {l.word}
+                                </b>
+                            </P>
+                            <P>
+                                <Word>설명</Word>
+                                <Explain>{l.meaning}</Explain>
+                            </P>
+                            <P>
+                                <Word>예시</Word>
+                                <Example>{l.example}</Example>
+                            </P>
+                        </Card>
+
+                    );
+                })}
 
             </Container>
 
-            <Button onClick={()=>{
+            <Button onClick={() => {
                 history.push("/detail")
             }}>+</Button>
         </Wrap>
