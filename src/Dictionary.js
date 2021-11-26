@@ -31,6 +31,8 @@ const Dictionary = (props) => {
                                 <Word>예시</Word>
                                 <Example>{l.example}</Example>
                             </P>
+                            <button>삭제</button>
+                            <button>수정</button>
                         </Card>
 
                     );

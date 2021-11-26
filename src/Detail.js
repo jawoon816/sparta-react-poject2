@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import {createDictionary} from "./redux/modules/dictionary";
+import {createDictionary, addDictionaryFB} from "./redux/modules/dictionary";
 
 
 const Detail = (props) => {
@@ -23,14 +23,14 @@ const Detail = (props) => {
         const word = my_input.current.value;
         const meaning = my_input2.current.value;
         const example = my_input3.current.value;
-        
+
         const wrap = {word, meaning, example};
         console.log(wrap);
        
-        // setList([{...list, ...wrap}]);
-
-        dispatch(createDictionary(wrap));
+        
+        dispatch(addDictionaryFB(wrap));
     }
+
     // console.log(list)
     return (
         <Wrap>
@@ -47,7 +47,16 @@ const Detail = (props) => {
                 <Word>예시</Word>
                 <Input type="text" ref={my_input3}/>
             </Box>
-            <Button onClick={addDicList}>추가하기</Button>
+            <div>
+            <Button2 onClick={()=>{
+                history.push("/")
+            }}>뒤로가기</Button2>
+            <Button onClick={()=>{
+                addDicList();
+                history.push("/")
+            }}>추가하기</Button>
+            
+            </div>
         </Wrap>
     );
 }
@@ -88,8 +97,21 @@ border-radius: 5px;
 border: #DDD solid 1px;
 `;
 
+const Button2 = styled.button`
+padding: 10px;
+background-color: #fff3c4;
+margin-top: 20px;
+border-radius: 10px;
+border: #ffde59 solid;
+cursor: pointer;
+margin-right: 20px;
+box-shadow: 1px 1px 2px 1px #dadce0;
+color: #858483;
+`;
+
 const Button = styled.button`
 padding: 10px;
+margin-left: 20px;
 background-color: #fff3c4;
 margin-top: 20px;
 border-radius: 10px;
@@ -98,5 +120,6 @@ cursor: pointer;
 box-shadow: 1px 1px 2px 1px #dadce0;
 color: #858483;
 `;
+
 
 export default Detail;
