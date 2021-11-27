@@ -28,8 +28,8 @@ export function createDictionary(dictionary) {
   return { type: CREATE, dictionary };
 };
 
-export function updateDictionary(dictionary_id){
-  return {type: UPDATE, dictionary_id};
+export function updateDictionary(dictionary_list){
+  return {type: UPDATE, dictionary_list};
 }
 
 
@@ -44,8 +44,6 @@ export const loadDictionaryFB = () => {
       dictionary_list.push({ id: d.id, ...d.data() });
     });
 
-    console.log(dictionary_list);
-
     dispatch(loadDictionary(dictionary_list));
   };
 };
@@ -55,24 +53,27 @@ export const addDictionaryFB = (dictionary) => {
     const docRef = await addDoc(collection(db, "dictionary"), dictionary);
     const _dictionary = await getDoc(docRef);
     const dictionary_data = { id: _dictionary.id, ..._dictionary.data() }
-    console.log(dictionary_data);
 
     dispatch(createDictionary(dictionary_data));
   }
 }
 
 export const updateDictionaryFB = (dictionary) => {
-  console.log(dictionary);
   return async function (dispatch, getState) {
     const docRef = doc(db, "dictionary", dictionary.id);
     await updateDoc(docRef, {word: dictionary.word, meaning: dictionary.meaning, example: dictionary.example});
 
-    console.log(getState().dictionary);
     const _dic_list = getState().dictionary.list;
-        const dic_index = _dic_list.findIndex((d)=>{
-            return d.id === dictionary.id;
-        })
-        dispatch(updateDictionary(dic_index));
+    const dic_index = _dic_list.findIndex((d)=>{
+        return d.id === dictionary.id;
+    })
+
+    // 기존에 있던 리덕스 데이터를 수정 값으로 변경
+    _dic_list[dic_index].word = dictionary.word
+    _dic_list[dic_index].meaning = dictionary.meaning
+    _dic_list[dic_index].example = dictionary.example
+
+    dispatch(updateDictionary(_dic_list));
   }
 }
 
@@ -100,16 +101,17 @@ export default function reducer(state = initialState, action = {}) {
     }
 
     case "dictionary/UPDATE": {
-      const new_dictionary_list =state.list.map((l,idx)=>{
+      // const new_dictionary_list = state.list.map((l,idx)=>{
           
-          if (parseInt(action.dictionary_index) === idx){
-              return {...l, completed: true};
-          } else {
-              return l;
-          }
-      });
-      console.log({ list: new_dictionary_list });
-      return {list:new_dictionary_list};
+      //     if (parseInt(action.dictionary_index) === idx){
+      //         return {...l, completed: true};
+      //     } else {
+      //         return l;
+      //     }
+      // });
+
+      // 수정된 리스트를 새 배열로 리턴
+      return {list: [...action.dictionary_list]};
   }
     default: return state;
   }

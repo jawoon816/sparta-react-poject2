@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
 import {deleteDictionaryFB} from "./redux/modules/dictionary"
 
 const Dictionary = (props) => {
+    
     const dispatch = useDispatch();
     const history = useHistory();
     // console.log(props.list)
