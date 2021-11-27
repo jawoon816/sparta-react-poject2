@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import {createDictionary, addDictionaryFB} from "./redux/modules/dictionary";
 
 
@@ -9,6 +9,8 @@ const Detail = (props) => {
     const history = useHistory();
     const dispatch = useDispatch();
     const [list, setList] = React.useState(props);
+    const dic_list = useSelector((state)=>state.dictionary.list);
+    console.log(dic_list)
 
     // console.log(list)
     const my_input = React.useRef(null);
@@ -28,7 +30,8 @@ const Detail = (props) => {
         console.log(wrap);
        
         
-        dispatch(addDictionaryFB(wrap));
+            dispatch(addDictionaryFB(wrap));
+        
     }
 
     // console.log(list)
@@ -52,8 +55,16 @@ const Detail = (props) => {
                 history.push("/")
             }}>뒤로가기</Button2>
             <Button onClick={()=>{
-                addDicList();
-                history.push("/")
+                if (my_input.current.value === ""){
+                    return alert("단어를 입력하세요!");
+                } else if (my_input2.current.value === ""){
+                    return (alert("설명을 입력하세요!"));
+                } else if (my_input3.current.value === ""){
+                    return (alert("예시를 입력하세요!"));
+                } else {
+                    addDicList();
+                    history.push("/")
+                }
             }}>추가하기</Button>
             
             </div>
@@ -79,7 +90,6 @@ width: 350px;
 height: 70px;
 padding: 10px;
 margin-top: 8px;
-
 `;
 
 const Word = styled.div`
@@ -95,6 +105,10 @@ padding: 10px;
 width: 330px;
 border-radius: 5px;
 border: #DDD solid 1px;
+Input:focus {
+    outline: none;
+    border: 1px solid #ff1212;
+}
 `;
 
 const Button2 = styled.button`

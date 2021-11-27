@@ -8,6 +8,7 @@ import {createDictionary, loadDictionary, loadDictionaryFB} from "./redux/module
 
 import Dictionary from "./Dictionary";
 import Detail from "./Detail";
+import Edit from "./Edit";
 
 
 function App() {
@@ -36,6 +37,9 @@ function App() {
           </Route>
           <Route path="/detail" exact>
             <Detail list={list} />
+          </Route>
+          <Route path="/edit/:id" exact>
+            <Edit list={list} />
           </Route>
         </div>
       </Wrap>

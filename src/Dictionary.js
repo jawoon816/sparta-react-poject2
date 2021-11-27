@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import {deleteDictionaryFB} from "./redux/modules/dictionary"
 
 const Dictionary = (props) => {
+    const dispatch = useDispatch();
     const history = useHistory();
     // console.log(props.list)
     // const dic_list = props.list;
@@ -14,7 +16,7 @@ const Dictionary = (props) => {
         <Wrap>
             <Container>
                 {dic_list.map((l, idx) => {
-                    console.log(l,idx);
+                    console.log(l, idx);
                     return (
                         <Card className="card" key={idx}>
                             <P>
@@ -31,8 +33,17 @@ const Dictionary = (props) => {
                                 <Word>예시</Word>
                                 <Example>{l.example}</Example>
                             </P>
-                            <button>삭제</button>
-                            <button>수정</button>
+                            <div style={{marginLeft:"200px"}}>
+                            <ButtonD onClick={()=>{
+                                dispatch(deleteDictionaryFB(l.id));
+                                window.location.reload();
+                            }}>삭제</ButtonD>
+                            <ButtonE onClick={()=>{
+                               
+                                history.push(`/edit/${l.id}`);
+                            }}>수정</ButtonE>
+                            </div>
+                            
                         </Card>
 
                     );
@@ -99,6 +110,26 @@ color: #88898a;
 
 const Example = styled.div`
 color: #0048ff;
+`;
+
+const ButtonD = styled.button`
+background-color: #fff3c4;
+box-shadow: 1px 1px 3px 1px #dadce0;
+cursor: pointer;
+border: 3px #ffde59 solid;
+border-radius: 10px;
+margin-right: 4px;
+color: #737373;
+`;
+
+const ButtonE = styled.button`
+background-color: #fff3c4;
+box-shadow: 1px 1px 3px 1px #dadce0;
+cursor: pointer;
+border: 3px #ffde59 solid;
+border-radius: 10px;
+margin-left: 4px;
+color: #737373;
 `;
 
 const Button = styled.button`
